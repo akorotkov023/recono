@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class RegistryCommandMainType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->setMethod('POST')
+            ->add('provider_name', ChoiceType::class, [
+                'label' => 'Провайдер',
+                'choices' => $options['provider_choices'],
+            ])
+            ->add('start', DateType::class, [
+                'label' => 'Начиная с даты',
+                'widget' => 'single_text',
+                'html5' => false,
+                'required' => true,
+                'attr' => ['class' => 'datepicker']
+
+            ])
+            ->add('end', DateType::class, [
+                'label' => 'Заканчивая датой',
+                'widget' => 'single_text',
+                'html5' => false,
+                'required' => true,
+                'attr' => ['class' => 'datepicker']
+            ])
+            ->add('create_data', DateType::class, [
+                'label' => 'За дату',
+                'widget' => 'single_text',
+                'html5' => false,
+                'required' => true,
+                'attr' => ['class' => 'datepicker']
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'provider_choices' => [],
+        ]);
+    }
+}

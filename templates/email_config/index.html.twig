@@ -1,0 +1,103 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Настройки{% endblock %}
+
+{% block body %}
+    <div class="row pt-3 pb-3">
+        <div class="col-5">
+            <label style="font-weight: bold">Настройка отправки реестров почту</label>
+        </div>
+    </div>
+    <div class="row pb-1">
+        <div class="col">
+            <a href="{{ path('app_email_config_create') }}"><i class="fa fa-plus-circle"></i> Создать настройку</a>
+        </div>
+    </div>
+{#        {{ dump(settings) }}#}
+    <div class="row">
+        <div class="col">
+            {% if settings|length > 0 %}
+                <table class="table table-striped">
+                    <tr>
+                        <th>{% trans %}Имя партнера{% endtrans %}</th>
+                        <th>{% trans %}PartnerID{% endtrans %}</th>
+                        <th>{% trans %}Кому{% endtrans %}</th>
+                        <th>{% trans %}Копия{% endtrans %}</th>
+                        <th>{% trans %}Тип{% endtrans %}</th>
+                        <th>{% trans %}Формат{% endtrans %}</th>
+                        <th>{% trans %}Активность{% endtrans %}</th>
+                        <th>{% trans %}Действие{% endtrans %}</th>
+                    </tr>
+                    {% for user in settings %}
+                        <tr
+                                {% if user.isActive == 1 %}
+                                    style="background-color: rgba(163,255,163,0.2);"
+                                {% else %}
+                                    style="background-color: rgba(255,0,0,0.05);"
+                                {% endif %}
+                        >
+                            <td>
+                                <div>{{ user.slug }}</div>
+                            </td>
+                            <td>
+                                {% for key in user.partnerId %}
+                                    {% if key == 0 %}
+                                        {{ key|replace({'0':''}) }}
+                                    {% else %}
+                                        {{ key }}
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for key in user.emailTo %}
+                                    {% if key == 0 %}
+                                        {{ key|replace({'0':''}) }}
+                                    {% else %}
+                                        {{ key }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for key in user.emailCc %}
+                                    {% if key == 0 %}
+                                        {{ key|replace({'0':''}) }}
+                                    {% else %}
+                                        {{ key }}
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for type in user.type %}
+                                    {% if type == 0 %}
+                                        {{ type|replace({'0':''}) }}
+                                    {% else %}
+                                        {{ type }}
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {{ user.format }}
+                            </td>
+                            <td>
+                                <div>{{ user.isActive? 'true':'false' }}</div>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_email_config_edit', {id:user.id}) }}" class="hint-target me-3"><i class="fa fa-user-edit"></i></a>
+                                <div class="hint">Редактировать</div>
+                                <a href="{{ path('app_email_config_delete', {id:user.id}) }}" class="hint-target"><i class="fa fa-user-minus"></i></a>
+                                <div class="hint">Удалить</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>Записей не найдено</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+

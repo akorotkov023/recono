@@ -1,0 +1,63 @@
+{% extends "backend.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mt-4 mx-lg-3">
+        <div class="col-form-label-sm">
+            Количество проблемных операций {{ count }}
+        </div>
+
+        <div class="d-flex gap-2">
+            <form action="{{ path('app_registry_issues_save_rejected') }}" method="POST">
+                <button class="btn btn-outline-primary" type="submit">
+                    Сохранить и очистить
+                </button>
+            </form>
+            <button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#clearModal">
+                Очистить
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="clearModal" tabindex="-1" aria-labelledby="clearModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="clearModalLabel">Очистить расхождения</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Точно хотите очистить?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                    <form action="{{ path('app_registry_issues_clear') }}" method="POST">
+                        <button class="btn btn-danger" type="submit">Да</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center">
+        <table class="table table-borderless small">
+            <tr>
+                <th>Дата создания</th>
+                <th>Номер команды</th>
+                <th>processingId/providerId</th>
+                <th>Описание</th>
+                <th>Статус</th>
+            </tr>
+            {% for tx in data %}
+                <tr class="small">
+                    <td>{{ tx.createdAt|date("d.m.Y H:i:s") }}</td>
+                    <td>{{ tx.commandId }}</td>
+                    <td>{{ tx.processingId }} <br> {{ tx.providerId }} </td>
+                    <td>{{ tx.description }}</td>
+                    <td>{{ tx.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Сверки{% endblock %}
+
+{% block body %}
+{#    {{ dump(data) }}#}
+    <div class="container-fluid">
+    <div class="row">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td width="50%">
+                        Информация по реестру:<br>
+                        Имя реестра: {{ data.reg_name }}<br>
+                        Оператор: {{ data.provider }}<br>
+                        За дату: {{ data.on_date }}<br>
+                        Сумма по реестру: {{ data.reg_amount }}<br>
+                        Кол-во: {{ data.reg_count }}
+                    </td>
+                    <td width="50%">
+                        Информация из базы:<br>
+                        <br>
+                        Оператор: {{ data.provider }}<br>
+                        За дату: {{ data.on_date }}<br>
+                        Сумма по базе: {{ data.base_amount }}<br>
+                        Кол-во: {{ data.base_count }}
+                    </td>
+                </tr>
+            </table>
+
+        <div class="col">
+            {% if  data.diff_reg == 0 and data.diff_base == 0 %}
+                <p>Расхождений нет</p>
+                {% include 'registry_command/search/tools.html.twig' %}
+            {% else %}
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th width="50%">Есть в реестре нет в базе</th>
+                        <th width="50%">Есть в базе но нет в реестре</th>
+                    </tr>
+                    <tr style="background-color: rgba(255,0,0,0.08);">
+                        <td width="50%">
+                            {{ data.diff_reg|slice(0, 70) }}...
+                        </td>
+                        <td width="50%">
+                            {{ data.diff_base|slice(0, 70) }}...
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">
+                            <textarea class="transaction_diff_reg" hidden="false">{{ data.diff_reg }}</textarea>
+                            <button class="btn-tooltip" id="button-to-clipboard">
+                                Copy all to clipboard
+                            </button>
+                        </td>
+                        <td width="50%">
+                            <textarea class="transaction_diff_base" hidden="false">{{ data.diff_base }}</textarea>
+                            <button class="btn-tooltip" id="btn-to-copy">
+                                Copy all to clipboard
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+{#                <a class="clipboard" href="#" data-clipboard-action="cut" data-clipboard-target="#bar"><i class="fa fa-plus"></i></a>#}
+{#                <div class="colorDiv" id="firstColorObject">#}
+{#                    <h3 class="colorCode" id="p1" value="123">#Color 1</h3>#}
+{#                    <div style="opacity:0">#}
+{#                        <input type="text" id="copyText"/>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <textarea id="bar">Mussum ipsum cacilds...</textarea>#}
+{#                <button class="btn-123" data-clipboard-action="cut" data-clipboard-target="#bar">#}
+{#                    Cut to clipboard#}
+{#                </button>#}
+            {% endif %}
+        </div>
+    </div>
+        <div class="col-3">
+            <a href="{{ path('app_registry_pre') }}" class="btn btn-primary mb-3">Назад</a>
+        </div>
+    </div>
+{% endblock %}

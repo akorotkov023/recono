@@ -1,0 +1,116 @@
+# Локальная разработка: docker compose up -d --build
+# Приложение: http://localhost:8991
+# PostgreSQL поднимается автоматически, схема создаётся из tables.sql (первый запуск).
+
+name: recono
+
+services:
+  db:
+    image: postgres:16
+    container_name: recono-db
+    environment:
+      POSTGRES_DB: recono
+      POSTGRES_USER: recono
+      POSTGRES_PASSWORD: recono
+    volumes:
+      - ./tables.sql:/docker-entrypoint-initdb.d/01-tables.sql:ro
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recono -d recono"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      target: test
+    container_name: recono-app
+    user: root
+    entrypoint: ["/bin/bash", "/app/docker/php/entrypoint.sh"]
+    command: ["php-fpm"]
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      PHP_IDE_CONFIG: serverName=recono
+    volumes:
+      - .:/app
+      - /app/vendor
+      - /app/public/build
+      - /app/var
+      - ./var/cron:/app/var/cron
+      - ./docker/php/dev-opcache.ini:/usr/local/etc/php/conf.d/zz-dev-opcache.ini:ro
+      - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ${REGISTRY_DIR:-./var/registry}:/registry
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  cron:
+    build:
+      context: .
+      target: test
+    container_name: recono-cron
+    command: ["bash", "/app/docker/cron/entrypoint.sh"]
+    user: root
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+    volumes:
+      - .:/app
+      - /app/vendor
+      - /app/public/build
+      - /app/var
+      - ./var/cron:/app/var/cron
+      - ${REGISTRY_DIR:-./var/registry}:/registry
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+
+  worker:
+    build:
+      context: .
+      target: test
+    container_name: recono-worker
+    user: root
+    entrypoint: ["/bin/bash", "/app/docker/php/entrypoint.sh"]
+    command: ["php", "bin/console", "messenger:consume", "extract", "send", "-vv", "--time-limit=3600"]
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+    volumes:
+      - .:/app
+      - /app/vendor
+      - /app/public/build
+      - /app/var
+      - ${REGISTRY_DIR:-./var/registry}:/registry
+    healthcheck:
+      disable: true
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    profiles: [worker]
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+    container_name: recono-nginx
+    ports:
+      - "8991:80"
+    volumes:
+      - ./public:/app/public:ro
+      - /app/public/build
+    depends_on:
+      - app
+
+volumes:
+  db-data:

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Сверки{% endblock %}
+
+{% block body %}
+
+{#    {% for message in app.flashes('notification') %}#}
+{#        <div class="alert alert-info alert-dismissible fade show">#}
+{#        {{ message }}#}
+{#        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>#}
+{#        </div>#}
+{#    {% endfor %}#}
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                {% if data|length > 0 %}
+                    {% for date, item in data %}
+                        <tr>
+                            <td colspan="6">
+                                <span style="font-weight:bold">{{ date }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Команда</th>
+                            <th>Сумма</th>
+                            <th>Количество</th>
+                            <th>Название реестра</th>
+                            <th>Сверка</th>
+                            <th>Действие</th>
+                        </tr>
+
+                        {% for id, record in item.commands %}
+                            {% set bank = record.registryConfigId().providerWalletId %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{% set amount = record.totalAmount/100 %}{{ amount|format_currency('RUB',  locale='de') }}</td>
+                                <td>{{ record.totalCount }}</td>
+                                <td>{{ record.description }}</td>
+                                <td>
+                                    {% if record.status in {0:'verified'} %}<i class="fa fa-check" style="color: green"></i>
+                                        {{ record.status }}
+                                    {% endif%}
+                                    {% if record.status in {0:'extracting',1:'new'} %}<span style="color: lightseagreen">{{ record.status }}</span>{% endif%}
+                                    {% if record.status in {0:'error'} %}
+                                        <span style="color: darkred">
+                                    <a class="dropdown-item" href="{{ path('app_registry_command_error') }}">{{ record.status }}</a>
+                                    </span>
+                                    {% endif%}
+                                    {% if record.status in {0:'extracted'} %}
+                                        <div class="col">
+                                            <a href="/check/{{ provider }}/{{ record.onDate|date("Y-m-d") }}/{{ record.id }}/{{ bank }}" class="btn btn-primary mb-3" type="submit">сверить</a>
+                                        </div>
+                                    {% endif%}
+                                    {% if record.status in {0:'issues'} %}
+                                        <div class="col">
+                                            <a href="/check/{{ provider }}/{{ record.onDate|date("Y-m-d") }}/{{ record.id }}/{{ bank }}" class="btn btn-primary mb-3" type="submit">Расхождение</a>
+                                        </div>
+                                    {% endif%}
+                                </td>
+                                <td>
+                                    {% if record.status == 'verified' and item.flag %}
+                                        {#                                <a href="{{ path('app_registry_command_restart_email', {provider:provider, date:create_data}) }}" class="btn btn-outline-primary">#}
+                                        {#                                    Проверить почту#}
+                                        {#                                </a>#}
+
+                                        <a href="{{ path('app_registry_command_restart_diff', {provider:provider, date:date, process:record.id}) }}"
+                                           class="hint-target me-1"><i class="fa fa-fire"></i>
+                                        </a>
+                                        <div class="hint">Нужна пере сверка! Проверь тестовые платежи</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <p>Нет данных</p>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{{ form_start(report_search) }}
+<div class="accordion mb-4" id="accordionSearch">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Отправка реестров
+            </button>
+        </h2>
+
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSearch">
+            <div class="accordion-body">
+                <div class="container-fluid">
+                    <div class="row">
+                            <div class="col-12 col-lg-2">{{ form_row(report_search.start) }}</div>
+                            <div class="col-12 col-lg-2">{{ form_row(report_search.end) }}</div>
+                            <div class="col-12 col-lg-2 mt-3">{{ form_row(report_search.form) }}</div>
+                            <div class="col-12 col-lg-1"></div>
+                            <div class="col-12 col-lg-3">{{ form_row(report_search.create_data) }} {{ form_row(report_search.choose) }}</div>
+{#                            <div class="col-12 col-lg-3"></div>#}
+                            <div class="col-12 col-lg-2 mt-3">
+                                {{ form_row(report_search.create_registry) }}
+                                {{ form_row(report_search.check_registry) }}
+                                {{ form_row(report_search.send_registry) }}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#<form id="myForm">#}
+{#    <!-- Предположим, что у вас есть input с именем key и value -->#}
+{#    <input type="text" name="key" placeholder="Key">#}
+{#    <input type="text" name="value" placeholder="Value">#}
+{#    <button type="submit">Add to Local Storage</button>#}
+{#</form>#}
+
+
+{{ form_end(report_search) }}

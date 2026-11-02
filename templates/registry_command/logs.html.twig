@@ -1,0 +1,34 @@
+{% extends "backend.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+
+<div class="col">
+    {% include 'registry_command/search/filter.html.twig' %}
+</div>
+    <div class="col-form-label-sm">
+        Количество исправленных операций {{ count }}
+    </div>
+    <div class="container d-flex justify-content-center">
+        <table class="table table-borderless small">
+            <tr>
+                <th>Дата создания</th>
+                <th>Номер команды</th>
+                <th>processingId</th>
+                <th>providerId</th>
+                <th>Описание</th>
+            </tr>
+            {% for tx in data %}
+                <tr class="small">
+                    <td>{{ tx.createdAt|date("d.m.Y H:i:s") }}</td>
+                    <td>{{ tx.commandId }}</td>
+                    <td>{{ tx.processingId }}</td>
+                    <td>{{ tx.providerId }}</td>
+                    <td>{{ tx.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

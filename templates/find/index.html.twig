@@ -1,0 +1,105 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="row pt-3 pb-3">
+            <div class="col-5">
+                <label style="font-weight: bold">Поиск данных</label>
+            </div>
+        </div>
+        <div class="col">
+            {% include 'find/filter.html.twig' %}
+            {#            {{ dump(any_id) }}#}
+            <table class="table table-sm table-borderless">
+                <tbody>
+                <tr>
+                    {% if data %}
+                    <div><span>__________________________________Найдена запись в реестре__________________________________</span></div>
+                    <br>
+                    <td>
+                        <div><span class="fw-bold">id:</span> {{ data.getId }}</div>
+                        <div><span class="fw-bold">type:</span> {{ data.getType }}</div>
+                        <div><span class="fw-bold">processingId:</span> {{ data.getProcessingId|default('null') }}</div>
+                        <div><span class="fw-bold">providerId:</span> {{ data.getProviderId }}</div>
+                        <div><span class="fw-bold">amount:</span> {{ data.getAmount }}</div>
+                        <div><span class="fw-bold">fee:</span> {{ data.getFee }}</div>
+                        <div><span class="fw-bold">cardnumber:</span> {{ data.getCardnumber }}</div>
+                        <div><span class="fw-bold">approveCode:</span> {{ data.getApproveCode }}</div>
+                        <div><span class="fw-bold">transactionDate:</span> {{ data.getTransactionDate|date("Y-m-d H:i:s") }}</div>
+                    </td>
+                    <td>
+                        <div class="col">
+                            <div><span class="fw-bold">Команда Id:</span> {{ data.getCommandId.getId }}</div>
+                            <div>
+                                <span class="fw-bold">Название реестра:</span>
+                                <a href="{{ path('app_find_file', {file:data.getCommandId.getDescription}) }}" class="link-primary me-3">{{ data.getCommandId.getDescription }}</a>
+                            </div>
+                            <div><span class="fw-bold">Статус:</span> {{ data.getCommandId.getStatus }}</div>
+                        </div>
+                    </td>
+                    {% elseif any %}
+                    <td>
+                <tr>
+                    <div><span>_________Найдено записей по апи____________________</span></div>
+                    <div><span class="fw-bold">amount:</span> {{ any.amount }}</div>
+                    <div><span class="fw-bold">cardnumber:</span> {{ any.cardnumber }}</div>
+                    <div><span class="fw-bold">cardholder:</span> {{ any.cardholder|default('null') }}</div>
+                    <div><span class="fw-bold">id:</span> {{ any.id }}</div>
+                    <div><span class="fw-bold">provider:</span> {{ any.provider|default('null') }}</div>
+                    <div><span class="fw-bold">providertxid:</span> {{ any.providertxid|default('null') }}</div>
+                    <div><span class="fw-bold">rrn:</span> {{ any.rrn|default('null') }}</div>
+                    <div><span class="fw-bold">started:</span> {{ any.started|date("Y-m-d H:i:s") }}</div>
+                    <div><span class="fw-bold">status:</span> {{ any.status }}</div>
+                    <div><span class="fw-bold">txid:</span> {{ any.txid }}</div>
+                    <div><span class="fw-bold">type:</span> {{ any.type }}</div>
+                    <div><span>___________________________________________________</span></div>
+                </tr>
+                </td>
+
+                {% elseif card %}
+                    <div><span>_________Найдено записей по маске карты____________</span></div>
+                    {% for any in card %}
+                        <td>
+                            <tr>
+                                <div><span class="fw-bold">amount:</span> {{ any.amount }}</div>
+                                <div><span class="fw-bold">cardnumber:</span> {{ any.cardnumber }}</div>
+                                <div><span class="fw-bold">cardholder:</span> {{ any.cardholder|default('null') }}</div>
+                                <div><span class="fw-bold">id:</span> {{ any.id }}</div>
+                                <div><span class="fw-bold">provider:</span> {{ any.provider|default('null') }}</div>
+                                <div><span class="fw-bold">providertxid:</span> {{ any.providertxid|default('null') }}</div>
+                                <div><span class="fw-bold">rrn:</span> {{ any.rrn|default('null') }}</div>
+                                <div><span class="fw-bold">started:</span> {{ any.started|date("Y-m-d H:i:s") }}</div>
+                                <div><span class="fw-bold">status:</span> {{ any.status }}</div>
+                                <div><span class="fw-bold">txid:</span> {{ any.txid }}</div>
+                                <div><span class="fw-bold">type:</span> {{ any.type }}</div>
+                                <div><span>___________________________________________________</span></div>
+                            </tr>
+                        </td>
+                    {% endfor %}
+                {% elseif res %}
+                    <div class="mb-2"><span>___________Найдено совпадений________________</span></div>
+                    {% for file in res %}
+                        <td>
+                            <tr>
+                                <div>
+                                    <a href="{{ path('app_find_file', {file:file}) }}" class="link-primary me-3">{{ file }}</a>
+                                </div>
+                            </tr>
+                        </td>
+                    {% endfor %}
+                    <div><span>_______________________________________________</span></div>
+                {% else %}
+                    <td>
+                        <div><span class="fw-bold">Ничего не найдено</span></div>
+                    </td>
+                {% endif %}
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Изменить process{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        {% if message is not empty %}
+            <div class="alert {{ success ? 'alert-success' : 'alert-danger' }}">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        {{ form_start(process_form) }}
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                {{ form_row(process_form.process) }}
+                {{ form_row(process_form.id) }}
+                {{ form_row(process_form.status) }}
+                {{ form_row(process_form.send) }}
+            </div>
+        </div>
+        {{ form_end(process_form) }}
+    </div>
+{% endblock %}

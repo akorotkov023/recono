@@ -1,0 +1,64 @@
+{{ form_start(report_search) }}
+<div class="accordion mb-4" id="accordionSearch">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Сверка реестров
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSearch">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.provider_name) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.start) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.end) }}
+                        <button class="btn btn-outline-primary form-control mb-3" id="app_registry_index" type="submit">Показать</button>
+                        </div>
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-3">
+                            {{ form_row(report_search.create_data) }}
+                            <button class="btn btn-outline-primary form-control mb-3" id="app_registry_command_restart_email" type="submit">Проверить почту</button>
+                            <button class="btn btn-outline-primary form-control mb-3" id="app_registry_command_restart_create" type="submit">Создать реестры</button>
+                            <button class="btn btn-outline-primary form-control mb-3" id="app_registry_command_restart_extract" type="submit">Извлечь файлы</button>
+                            <button class="btn btn-outline-primary form-control mb-3" id="app_registry_command_restart_check" type="submit">Проверить реестры</button>
+                            <button class="btn btn-outline-primary form-control mb-3" id="app_registry_command_restart_fix" type="submit">Fix</button>
+                        </div>
+
+
+{#                        <div class="col-lg-3">#}
+{#                            <div class="row mt-3 mb-3">#}
+
+{#                                <a href="{{ path('app_registry_command_restart_email', {provider:provider, date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Проверить почту#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_create', {date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Создать реестры#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_extract', {provider:provider}) }}" class="btn btn-outline-primary">#}
+{#                                    Извлечь файлы#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_check', {provider:provider, date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Проверить реестры#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(report_search) }}

@@ -1,0 +1,8 @@
+# Локальный dev-крон для проверки конвейера.
+# Запускается только registry_create (за вчерашнюю дату, как в продакшне).
+# Каждую минуту — чтобы быстро увидеть результат. Для продакшна расписание
+# и полный набор шагов — в deploy/crontab.example.
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+
+#* * * * * cd /app && php bin/console registry_create "$(date -d yesterday +\%F)" >> /app/var/cron/reconcil.log 2>&1

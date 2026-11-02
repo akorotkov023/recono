@@ -1,0 +1,87 @@
+$primary: #2f6f7a;
+$secondary: #4a5568;
+$success: #2f9e6e;
+$danger: #c0392b;
+$body-color: #2d3748;
+$font-family-base: Avenir Next, Arial, Sans-Serif;
+$font-weight-base: 300;
+$h1-font-size: 24px;
+$h2-font-size: 18px;
+$table-cell-padding-x: 1rem;
+$table-cell-padding-y: 1rem;
+
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3";
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/brands';
+
+th {
+    font-weight: 500;
+}
+
+.form-control {
+    margin: 0.4rem 0;
+}
+
+.fa-copy {
+    cursor: pointer;
+}
+
+.img-remove {
+    right: 0;
+}
+
+.loader{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    transition: opacity 0.75s, visibility 0.75s;
+}
+
+.loader-hidden{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader::after{
+    content: "";
+    width: 75px;
+    height: 75px;
+    border: 15px solid #DDDDDD;
+    border-top-color: #2f6f7a;
+    border-radius: 50%;
+    animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+    from{
+        transform: rotate(0turn);
+    }
+    to{
+        transform: rotate(1turn);
+    }
+}
+
+.hint {
+    display: none;
+    position: absolute;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 5px;
+    z-index: 1000;
+}
+.hint-target:hover + .hint {
+    display: block;
+}
+

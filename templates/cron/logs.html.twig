@@ -1,0 +1,36 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Логи крона{% endblock %}
+
+{% block body %}
+    <div class="row pt-3 pb-3">
+        <div class="col">
+            <h5>Логи крона</h5>
+            <small class="text-muted">{{ dir }}</small>
+        </div>
+    </div>
+
+    {% if files is empty %}
+        <div class="alert alert-info">
+            Логов пока нет. Крон ещё не запускался или файл лога не создан.
+        </div>
+    {% else %}
+        {% for file in files %}
+            <div class="row pb-2">
+                <div class="col">
+                    <strong>{{ file.name }}</strong>
+                    <small class="text-muted">
+                        — последние {{ file.lines|length }} строк
+                        {% if file.mtime %}({{ file.mtime|date('d.m.Y H:i:s') }}){% endif %}
+                    </small>
+                </div>
+            </div>
+            <div class="row pb-4">
+                <div class="col">
+                    <pre class="bg-dark text-light p-3 mb-0" style="height: calc(100vh - 160px); overflow: auto; white-space: pre-wrap;">{% for line in file.lines %}{{ line }}
+{% endfor %}</pre>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

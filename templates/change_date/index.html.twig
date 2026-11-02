@@ -1,0 +1,35 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Изменить дату{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        {% if message is not empty %}
+            <div class="alert {{ success ? 'alert-success' : 'alert-danger' }}">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        {{ form_start(change_date_form) }}
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                {{ form_row(change_date_form.id) }}
+                {{ form_row(change_date_form.started) }}
+                <div class="row">
+                    <div class="col">
+                        {{ form_row(change_date_form.find) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row(change_date_form.change) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(change_date_form) }}
+
+        {% if json is not empty %}
+            <pre class="mt-3">{{ json }}</pre>
+        {% endif %}
+    </div>
+{% endblock %}

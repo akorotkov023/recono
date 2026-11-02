@@ -1,0 +1,19 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Акты{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="row pt-3 pb-3">
+            <div class="col-5">
+                <label style="font-weight: bold">Формирование реестра</label>
+            </div>
+        </div>
+        <div class="col">
+            {% include 'month_registry/search.html.twig' %}
+        </div>
+
+            {% include 'month_registry/loader.html.twig' %}
+    </div>
+
+{% endblock %}

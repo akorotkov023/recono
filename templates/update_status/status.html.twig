@@ -1,0 +1,35 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Статус{% endblock %}
+
+{% block body %}
+    <div class="container d-flex align-items-center justify-content-center py-4">
+        {% if good is not empty %}
+            <div class="alert alert-success mt-3">
+                <strong>Успешно сменился статус: {{ count }} шт.</strong><br><br>
+                {% for item in good %}
+                    {{ item }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="container d-flex align-items-center justify-content-center py-4">
+        {% if diff is not empty %}
+            <div class="alert alert-warning mt-3">
+                <strong>Ошибка, статус не сменился:</strong><br>
+                {% for item in diff %}
+                    {{ item }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="container d-flex align-items-center justify-content-center py-2">
+        <div class="col-2">
+            <a href="{{ path('app_change_status') }}"
+               class="btn btn-outline-primary form-control mb-1"
+               type="submit">
+                <i class="fa fa-door-closed"></i> Назад
+            </a>
+        </div>
+    </div>
+{% endblock %}

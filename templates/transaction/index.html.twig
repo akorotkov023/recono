@@ -1,0 +1,58 @@
+{% extends "backend.html.twig" %}
+
+{% block body %}
+{#        {{ dump(txs) }}#}
+    <div class="row">
+        <table class="table table-striped small">
+            <tr>
+                <th>Дата создания</th>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Мерчант</th>
+                <th>Сумма</th>
+                <th>Статус</th>
+                <th>Действие</th>
+            </tr>
+            {% for tx in txs %}
+                <tr
+                        {% if tx.status == 'Charged' %} style="background-color: rgba(163,255,163,0.2);"{% endif %}
+                        {% if tx.status in {0:'Rejected', 1:'failed', 2:'error'} %} style="background-color: rgba(255,0,0,0.05);"{% endif %}
+                >
+                    <td>{{ tx.started|date_modify("+3 hours")|date("d.m.Y H:i:s") }}</td>
+                    <td class="small">
+                        <div class="row">
+                            <div class="col-3">id: </div><div class="col">{{ tx.id }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">мерчант: </div><div class="col">{{ tx.txid }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">провайдер ({{ tx.provider }}): </div><div class="col">{{ tx.outertxid }}</div>
+                        </div>
+                    </td>
+                    <td>{{ tx.type }}</td>
+                    <td>{{ tx.partner_id }}</td>
+                    <td>{% set amount = tx.amount/100 %}{{ amount|format_currency('RUR') }}</td>
+                    <td>
+                        {% if tx.status == 'Charged' %}<i class="fa fa-check" style="color: green"></i>{% endif%}
+                        {% if tx.status in {0:'rejected', 1:'failed', 2:'rrror'} %}<i class="fa fa-cancel" style="color: red"></i>{% endif%}
+                        {{ tx.status }}<br/>
+                        {{ tx.error_description }}<br/>
+                        терминал: {{ tx.current_terminal }}<br/>
+                    </td>
+                    <td>
+                        <div class="col">
+{#                            {% if tx.current_terminal is null or tx.provider == 'superprovider' %}#}
+{#                                <a href="/set/status/{{ tx.id }}" class="btn btn-success mb-3" type="submit">set_status</a>#}
+{#                            {% elseif tx.outertxid is not null %}#}
+{#                            <a href="/set/status/{{ tx.id }}" class="btn btn-success mb-3" type="submit">set_status</a>#}
+{#                            {% else %}#}
+                            <a href="/set/status/{{ tx.id }}" class="btn btn-outline-danger mb-3" type="submit">set_status</a>
+{#                            {% endif %}#}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

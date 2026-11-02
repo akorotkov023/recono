@@ -1,0 +1,17 @@
+{% extends "backend.html.twig" %}
+
+{% block title %}Registry{% endblock %}
+
+{% block body %}
+
+    {% include 'registry_command_main/filter.html.twig' %}
+
+    {% if provider %}
+        {% include 'registry_command_main/loader.html.twig' %}
+    {% else %}
+        <div class="alert alert-warning">
+            Нет активных провайдеров. Добавьте их в разделе «Сверка → Настройки».
+        </div>
+    {% endif %}
+
+{% endblock %}

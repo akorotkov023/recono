@@ -1,0 +1,72 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        bind:
+            $app: '%env(APP_ENV)%'
+            $reg_temp: '%env(REG_TEMP)%'
+            $in: '%env(IN)%'
+            $out: '%env(OUT)%'
+            $app_registry_dir: '%env(OUT_REG_DIR)%'
+            $app_act_dir: '%env(OUT_ACT_DIR)%'
+            # Почта: адрес отправителя реестров
+            $mailer_from: '%env(MAILER_FROM)%'
+
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Service\Connection\Pool:
+        public: false
+        arguments:
+            - '%database%'
+
+
+    App\Service\ApiSession:
+        arguments:
+            $api_url: '%env(PROCESSING_API_URL)%'
+            $login: '%env(PROCESSING_LOGIN)%'
+            $password: '%env(PROCESSING_PASSWORD)%'
+            $encryption_key: '%env(PROCESSING_ENCRYPTION_KEY)%'
+
+    App\Helper\BaseHelper:
+        arguments:
+            $env: '%env(PROCESSING_DB_NAME_PROD)%'
+            $regProvider: '%env(REG_PROVIDER)%'
+            $processing_url: '%env(PROCESSING_API_URL)%'
+
+    App\Service\RegistryMailService:
+        arguments:
+            $regTemp: '%env(REG_TEMP)%'
+            $regProvider: '%env(REG_PROVIDER)%'
+            $imapHost: '%env(IMAP_HOST)%'
+            $imapPort: '%env(int:IMAP_PORT)%'
+            $imapLogin: '%env(IMAP_LOGIN)%'
+            $imapPassword: '%env(IMAP_PASSWORD)%'
+            $imapFolderPayments: '%env(IMAP_FOLDER_PAYMENTS)%'
+            $imapFolderSaved: '%env(IMAP_FOLDER_SAVED)%'
+            $imapSslVerify: '%env(bool:IMAP_SSL_VERIFY)%'
+
+    App\Logging\CustomLineFormatter:
+        public: false
+
+    App\Service\TelegramService:
+        arguments:
+            $botToken: '%env(TELEGRAM_BOT_TOKEN)%'
+            $chatId: '%env(TELEGRAM_CHAT_ID)%'

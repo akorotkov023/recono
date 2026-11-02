@@ -1,0 +1,24 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Изменить статус{% endblock %}
+
+{% block body %}
+    {{ form_start(change_form) }}
+
+    <div class="row">
+        {% if flag %}
+        <div class="col-12 col-lg-6">
+            {{ form_row(change_form.status) }}
+            {{ form_row(change_form.description) }}
+            {{ form_row(change_form.ids) }}
+            {{ form_row(change_form.is_active) }}
+            {{ form_row(change_form.send) }}
+        </div>
+        {% else %}
+        <div class="col-12 col-lg-6">
+            <p>Сменили статус {{ count }} шт.</p>
+        </div>
+        {% endif%}
+    </div>
+    {{ form_end(change_form) }}
+{% endblock %}

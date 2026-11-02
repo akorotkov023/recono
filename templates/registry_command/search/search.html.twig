@@ -1,0 +1,65 @@
+{{ form_start(report_search) }}
+<div class="accordion mb-4" id="accordionSearch">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Фильтры и команды для сверки данных
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSearch">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.provider_name) }}
+                            {{ form_row(report_search.show) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.start) }}
+                        </div>
+                        <div class="col-lg-2">
+                            {{ form_row(report_search.end) }}
+                        </div>
+                        <div class="col-lg-2">
+
+                        </div>
+
+                        <div class="col-lg-3">
+                            {{ form_row(report_search.create_data) }}
+                            {{ form_row(report_search.registry_restart_email) }}
+                            {{ form_row(report_search.registry_restart_create) }}
+                            {{ form_row(report_search.registry_restart_extract) }}
+                            {{ form_row(report_search.registry_restart_check) }}
+                        </div>
+
+{#                        <div class="col-lg-3">#}
+{#                            {{ form_row(report_search.create_data) }}#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_email', {provider:provider, date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Проверить почту#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_create', {date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Создать реестры#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_extract', {provider:provider}) }}" class="btn btn-outline-primary">#}
+{#                                    Извлечь файлы#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="row mt-3 mb-3">#}
+{#                                <a href="{{ path('app_registry_command_restart_check', {provider:provider, date:create_data}) }}" class="btn btn-outline-primary">#}
+{#                                    Проверить реестры#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(report_search) }}

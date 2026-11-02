@@ -1,0 +1,148 @@
+{% extends 'backend.html.twig' %}
+
+{% block title %}Реестры{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('notification') %}
+        <div class="alert alert-info alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col">
+            {% include 'email_process/filter.html.twig' %}
+{#            {{ dump(data) }}#}
+            {% if data|length > 0 %}
+            <table class="table table-bordered table-striped">
+                {% for date, item in data %}
+                    {% set firstRecord = item.amounts|first %}
+                    {% set refundsRecord = item.refunds|default(0) %}
+                    <tr>
+                        <td colspan="9">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span style="font-weight:bold">{{ date }}</span>
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-end">
+                                    {% for id, record in item.amounts %}
+                                        <pre-line>
+                                            <span style="color: #c6320d">{{ record.getRegistryConfigId().provider }}</span> :
+                                            <span style="color: #2d6696">{{ (record.getTotalAmount/100.0)|number_format(2, ',', ' ') }} ₽</span>
+                                        </pre-line>
+                                        <br>
+                                    {% endfor %}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Процесс</th>
+                        <th>Имя партнера</th>
+                        <th>Реестр</th>
+                        <th>Сумма по реестру</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+
+                    {% for id, record in item.processIds %}
+                        <tr>
+                            <td>
+                                <div>{{ record.id }}</div>
+                            </td>
+                            <td>
+                                <div>
+                                    {{ record.getEmailConfigId().slug }}
+                                </div>
+                            </td>
+                            <td>
+                                {% for reg in record.regs %}
+                                    {% if reg %}
+                                        <a href="{{ path('app_find_file', {file:reg}) }}" class="link-primary me-3" style="font-size: smaller">{{ reg }}</a>
+                                        <br>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for key, value in record.totalAmount|slice(0, record.totalAmount|length - 1) %}
+                                    {{ key }} - {{ value|number_format(2, ',', ' ') }} ₽ <br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if record.status in {0:'finished'} %}
+                                    <i class="fa fa-check" style="color: green"></i>
+                                    {{ record.status }}
+                                {% endif%}
+                                {% if record.status in {0:'creating', 1:'finishing', 2:'checking'} %}
+                                    <span style="color: lightseagreen">
+                                    {{ record.status }}...
+                                    </span>{% endif%}
+                                {% if record.status in {0:'created'} %}{{ record.status }}{% endif%}
+                                {% if record.status in {0:'checked'} %}
+                                    <span style="color: green">
+                                    {{ record.status }}
+                                    </span>
+                                {% endif%}
+                                {% if record.status in {0:'new'} %}
+                                    <span style="color: darkgreen">
+                                    {{ record.status }}
+                                    </span>
+                                {% endif%}
+                                {% if record.status in {0:'error'} %}
+                                    <span style="color: darkred">
+                                    <a class="dropdown-item" href="{{ path('app_email_process_error') }}">{{ record.status }}</a>
+                                    </span>
+                                {% endif%}
+                            </td>
+                            <td>
+                                {% if record.status == 'created' %}
+                                    <a href="{{ path('app_email_process_restart_check', {date: date, process: record.id}) }}" class="hint-target me-1"><i class="fa fa-envelope-circle-check"></i></a>
+                                    <div class="hint">Проверить данные</div>
+                                    <a href="{{ path('app_email_process_restart_create', {date: date, id: record.getEmailConfigId().id}) }}" class="hint-target me-1"><i class="fa fa-redo"></i></a>
+                                    <div class="hint">Пересоздать процесс</div>
+                                    <a href="{{ path('app_email_process_cancel', {date:date, process: record.id}) }}" class="hint-target"><i class="fa fa-cancel"></i></a>
+                                    <div class="hint">Отменить процесс</div>
+                                {% endif %}
+                                {% if record.status == 'checked' %}
+                                    <a href="{{ path('app_email_process_finish', {date:date, process: record.id}) }}" class="hint-target me-1"><i class="fa fa-running"></i></a>
+                                    <div class="hint">Отправить реестры</div>
+                                    <a href="{{ path('app_email_process_cancel', {date:date, process: record.id}) }}" class="hint-target"><i class="fa fa-cancel"></i></a>
+                                    <div class="hint">Отменить процесс</div>
+                                {% endif %}
+                                {% if record.status == 'new' %}
+                                    <a href="{{ path('app_email_process_restart_create', {date: date, id: record.getEmailConfigId().id}) }}" class="hint-target me-1"><i class="fa fa-redo"></i></a>
+                                    <div class="hint">Пересоздать процесс</div>
+                                    <a href="{{ path('app_email_process_cancel', {date:date, process: record.id}) }}" class="hint-target"><i class="fa fa-cancel"></i></a>
+                                    <div class="hint">Отменить процесс</div>
+                                {% endif %}
+
+                                {% if record.status == 'finished' and record.getEmailConfigId().isTotalAmountChecked %}
+                                    {% set diff = (record.totalAmount.0|default(0) + record.totalAmount.2|default(0)) - (firstRecord.getTotalAmount|default(0) / 100.0) %}
+                                    {% if diff|round(2) != 0 %}
+                                        <span style="color: #a3111c;">{{ diff|round(2)|number_format(2, ',', ' ') }}</span>
+                                        <a href="#" class="hint-target me-1"><i class="fa fa-wheelchair"></i></a>
+                                        <div class="hint">(Успешные {{ record.totalAmount.0|default(0)}} + Возвраты {{ record.totalAmount.2|default(0) }} - Успешные в реестре {{ (firstRecord.getTotalAmount|default(0) / 100.0) }} )</div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if record.status == 'finished' and record.getEmailConfigId().isRefundChecked %}
+                                    {% set diff = record.totalAmount.2|default(0) - (refundsRecord|default(0) / 100.0) %}
+                                    {% if diff|round(2) != 0 %}
+                                        <span style="color: #a3111c;">{{ diff|number_format(2, ',', ' ') }}</span>
+                                        <a href="#" class="hint-target me-1"><i class="fa fa-wheelchair-alt"></i></a>
+                                        <div class="hint">Возвраты (возвраты {{ record.totalAmount.2|default(0) }} - сумма возвратов {{ (refundsRecord / 100.0)|default(0) }})</div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+            {% else %}
+                <p>Записей не найдено</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

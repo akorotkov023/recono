@@ -1,0 +1,28 @@
+{{ form_start(search) }}
+<div class="accordion mb-4" id="accordionSearch">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Критерии для построения реестра
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSearch">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 col-lg-2">{{ form_row(search.partner_id) }}</div>
+                            <div class="col-12 col-lg-2">{{ form_row(search.type) }}</div>
+                            <div class="col-12 col-lg-2">{{ form_row(search.status) }}</div>
+                            <div class="col-12 col-lg-2">{{ form_row(search.month) }}</div>
+                            <div class="col-12 col-lg-2 mt-3">
+                                <button class="btn btn-outline-primary form-control mt-4" id="button-to-loader">Сформировать</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(search) }}

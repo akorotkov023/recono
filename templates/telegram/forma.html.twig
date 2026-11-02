@@ -1,0 +1,13 @@
+{{ form_start(telegram_form) }}
+    <h1 class="fw-normal my-4">
+        Создание текста
+    </h1>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            {{ form_row(telegram_form.message) }}
+            {{ form_row(telegram_form.create) }}
+        </div>
+        <div class="col-12 col-lg-6">
+        </div>
+    </div>
+{{ form_end(telegram_form) }}

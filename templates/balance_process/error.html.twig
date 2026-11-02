@@ -1,0 +1,42 @@
+{% extends "backend.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+    <div class="row pt-3 pb-3">
+        <div class="col-5">
+            <label style="font-weight: bold">Ошибки в процессах</label>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+            <div class="m-lg-1">
+                <a href="{{ path('app_balance_process_error_delete_all', {id:ids}) }}" class="btn btn-outline-warning">Очистить все ошибки</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container d-flex justify-content-center">
+        {% if data|length > 0 %}
+            <table class="table table-borderless small">
+            <tr>
+                <th>Дата создания</th>
+                <th>Номер процесса</th>
+                <th>Описание</th>
+                <th>Действие</th>
+            </tr>
+            {% for tx in data %}
+                <tr class="small">
+                    <td>{{ tx.createdAt|date("d.m.Y H:i:s") }}</td>
+                    <td>{{ tx.processId }}</td>
+                    <td>{{ tx.description }}</td>
+                    <td>
+                        <a href="{{ path('app_balance_process_error_delete', {id:tx.id}) }}" class="link-primary confirmable"><i class="fa fa-minus"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>Нет ошибок</p>
+        {% endif %}
+    </div>
+{% endblock %}

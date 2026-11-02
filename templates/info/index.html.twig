@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+{#                {{ dump(base_reg_counts) }}#}
+                <h6 class="text-center"><span>{{ datetime }}</span></h6>
+                {% for base_item in base_reg_counts.base %}
+                    {% set provider = base_item.provider %}
+                    {% set base_count = base_item.count %}
+
+                    {# Находим соответствующий элемент в reg по provider #}
+                    {% set reg_item = (base_reg_counts.reg | filter(r => r.provider == provider))|first %}
+                    {% set reg_count = reg_item is defined ? reg_item.count : 0 %}
+
+                    <div class="card border-success mt-1" style="max-width: 100%">
+                        <div class="card-header"
+                                {% if base_count == reg_count %}
+                                    style="background-color: rgba(163,255,163,0.2);"  {# зелёный если совпадает #}
+                                {% else %}
+                                    style="background-color: rgba(255,0,0,0.5);"      {# красный если не совпадает #}
+                                {% endif %}
+                        >
+                            <div class="text-center">
+                                <strong>{{ provider }}</strong><br>
+                                В базе (prod): {{ base_count }}<br>
+                                В реестрах: {{ reg_count }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+{#            {{ dump(data) }}#}
+                {% for tx in data %}
+                    {% if tx.status|length > 0 %}
+                            <div class="card border-success mt-1" style="max-width: 100%">
+                                <div class="card-header"
+                                        {% if tx.status == 'Charged' %} style="background-color: rgba(163,255,163,0.2);"{% endif %}
+                                        {% if tx.status in {0:'created', 1:'Charging', 2:'error'} %} style="background-color: rgba(255,0,0,0.05);"{% endif %}
+                                ><div class="text-center">{{ tx.status }}  {{ tx.count }}</div></div>
+
+                            </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

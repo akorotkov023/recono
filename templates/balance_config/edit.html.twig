@@ -1,0 +1,25 @@
+{% extends "backend.html.twig" %}
+
+{% block title %}{% if user_exists %}Редактирование{% else %}Создание новых{% endif %}настроек{% endblock %}
+
+{% block body %}
+{#        {{ dump(user_form) }}#}
+    {{ form_start(user_form) }}
+    <h1 class="fw-normal my-4">
+        {% if user_exists %}Редактирование{% else %}Создание новых{% endif %} настроек для балансов
+        <button class="btn btn-sm btn-outline-primary float-end" type="submit">сохранить</button>
+    </h1>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            {{ form_row(user_form.partner_id) }}
+            {{ form_row(user_form.partner_name) }}
+            {{ form_row(user_form.wallet_id) }}
+            {{ form_row(user_form.type) }}
+            {{ form_row(user_form.description) }}
+            {{ form_row(user_form.is_active) }}
+        </div>
+        <div class="col-12 col-lg-6">
+        </div>
+    </div>
+    {{ form_end(user_form) }}
+{% endblock %}

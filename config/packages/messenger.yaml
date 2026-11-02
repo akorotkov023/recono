@@ -1,0 +1,22 @@
+framework:
+    messenger:
+        failure_transport: failed
+
+        transports:
+            extract:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    max_retries: 1
+                    multiplier: 1
+            send:
+                dsn: '%env(MESSENGER_TRANSPORT_SEND)%'
+                retry_strategy:
+                    max_retries: 1
+                    multiplier: 1
+            failed:
+                dsn: '%env(MESSENGER_FAILED_DSN)%'
+
+        routing:
+            # Route your messages to the transports
+            'App\Message\ExtractedRegistryMessage': extract
+            'App\Message\ChangeStatusMessage': send

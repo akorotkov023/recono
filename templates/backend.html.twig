@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Админ панель{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<div aria-live="polite" aria-atomic="true" class="bg-dark position-relative bd-example-toasts">
+    <div class="toast-container position-fixed p-3 top-0 end-0" id="toastPlacement" style="z-index: 9999">
+        <div class="toast toast-danger align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <nav class="navbar navbar-light navbar-expand-md" style="background-color: #eef5f6;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navcol-1">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link{% if app.request.attributes.get('_route') matches '{app_info_pre}' %} active{% endif %}" href="{{ path('app_info_pre') }}">
+                                Инфо
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') matches '{app_registry_pre}' %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Сверка
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_registry_pre') }}">Сверка реестров</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_registry_command_error') }}">Просмотр ошибок</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_registry_logs') }}">Логи</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_registry_issues') }}">Расхождение</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_registry_config') }}">Настройки</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') matches '{app_balance_process}' %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Балансы
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_balance_process') }}">Расчет балансов</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_balance_process_error') }}">Просмотр ошибок</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_balance_config') }}">Настройки</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') matches '{app_email_config}' %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Реестры
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_email_process') }}">Отправленные реестры</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_email_process_error') }}">Просмотр ошибок</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_email_config') }}">Настройки</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') matches '{app_act}' %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Месяц
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_act') }}">Акты</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_month_registry') }}">Реестры</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if app.request.attributes.get('_route') matches '{app_find}' %} active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Доп
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ path('app_find') }}">Поиск</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_change_status') }}">Изменить статус</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_change_date') }}">Изменить дату</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_telegram') }}">Телеграм</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_two_registry') }}">Сверка файлов</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_change_process_status') }}">Процессы</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_cron_logs') }}">Логи крона</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                {% elseif is_granted('ROLE_USER')%}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link{% if app.request.attributes.get('_route') matches '{app_find}' %} active{% endif %}" href="{{ path('app_find') }}">Поиск</a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+
+            {% if app.user.root %}
+                <span class="me-3" style="color: #a7a5a5"><a class="dropdown-item" href="{{ path('app_root', {flag:'false'}) }}">LogOn</a></span>
+            {% else %}
+                <span class="me-3" style="color: #a7a5a5"><a class="dropdown-item" href="{{ path('app_root', {flag:'true'}) }}">LogOff</a></span>
+            {% endif %}
+
+            <span class="me-3">{{ app.user.email }}</span>
+            <a class="nav-link{% if app.request.attributes.get('_route') matches '{app_logout}' %} active{% endif %}" href="{{ path('app_logout') }}">Выход</a>
+        </div>
+    </nav>
+    {% block body %}{% endblock %}
+</div>
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>

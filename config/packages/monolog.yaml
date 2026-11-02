@@ -1,0 +1,42 @@
+monolog:
+  channels:
+    - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+    - parser
+
+when@dev:
+  monolog:
+    handlers:
+      parser:
+        type: stream
+        path: "%kernel.logs_dir%/%kernel.environment%.log"
+        level: info
+        formatter: App\Logging\CustomLineFormatter
+        channels: [ "parser", "app" ]
+      stream:
+        type: stream
+        path: "php://stderr"
+        level: info
+        formatter: App\Logging\CustomLineFormatter
+        channels: [ "parser", "app" ]
+
+when@prod:
+  monolog:
+    handlers:
+      # Ошибки и исключения всех каналов — в stderr контейнера (docker logs recono-app)
+      errors:
+        type: stream
+        path: "php://stderr"
+        level: error
+        channels: ["!event", "!deprecation"]
+      parser:
+        type: stream
+        path: "%kernel.logs_dir%/%kernel.environment%.log"
+        level: info
+        formatter: App\Logging\CustomLineFormatter
+        channels: [ "parser", "app" ]
+      stream:
+        type: stream
+        path: "php://stderr"
+        level: info
+        formatter: App\Logging\CustomLineFormatter
+        channels: [ "parser", "app" ]

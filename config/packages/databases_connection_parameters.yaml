@@ -1,0 +1,19 @@
+# Подключение к БД процессинга (App\Service\Connection\Pool). Переменные задаются в окружении
+# контейнера (deploy/app.env). Имена намеренно не начинаются с цифры: переменные вида 3DS_*
+# php-fpm не передаёт воркерам (недопустимое имя по POSIX), и приложение молча брало
+# устаревшие значения из vault.
+parameters:
+  database:
+    dev:
+      host:     '%env(PROCESSING_DB_HOST)%'
+      port:     '%env(PROCESSING_DB_PORT)%'
+      database: '%env(PROCESSING_DB_NAME)%'
+      user:     '%env(PROCESSING_DB_USER)%'
+      password: '%env(PROCESSING_DB_PASSWORD)%'
+
+    prod:
+      host:     '%env(PROCESSING_DB_HOST_PROD)%'
+      port:     '%env(PROCESSING_DB_PORT_PROD)%'
+      database: '%env(PROCESSING_DB_NAME_PROD)%'
+      user:     '%env(PROCESSING_DB_USER_PROD)%'
+      password: '%env(PROCESSING_DB_PASSWORD_PROD)%'

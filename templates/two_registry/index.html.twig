@@ -1,0 +1,61 @@
+{% extends "backend.html.twig" %}
+{% block body %}
+    <div class="row">
+        <div class="col">
+            {{ form_start(upload) }}
+            <div class="accordion mb-4" id="accordionSearch">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            (загружать только в формате .csv)
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSearch">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        {{ form_row(upload.file1) }}
+                                        {{ form_row(upload.file2) }}
+                                    </div>
+                                    <div class="col-auto mt-4">
+                                        {{ form_row(upload.download) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(upload) }}
+            </div>
+        </div>
+        <hr>
+
+        {% if reg and base %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Есть в "{{ reg }}", но нет в "{{ base }}":</h6>
+
+                    {% for item in onlyInFile1 %}
+                        {{ item }}<br>
+                    {% else %}
+                        <i>Нет различий</i>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <h6>Есть в "{{ base }}", но нет в "{{ reg }}":</h6>
+
+                    {% for item in onlyInFile2 %}
+                        {{ item }}<br>
+                    {% else %}
+                        <i>Нет различий</i>
+                    {% endfor %}
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+
+{% endblock %}

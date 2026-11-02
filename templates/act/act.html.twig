@@ -1,0 +1,7 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_find_file', {file:link}) }}" class="link-primary me-3">{{ link }}</a>
+{% endblock %}

@@ -1,0 +1,28 @@
+.git
+.gitignore
+.gitattributes
+.forgejo
+.idea
+.DS_Store
+**/.DS_Store
+
+node_modules
+vendor
+public/build
+public/bundles
+var
+
+# Локальные и секретные файлы окружения
+.env.local
+.env.local.php
+.env.*.local
+config/secrets/*/*.decrypt.private.php
+
+# Инфраструктура, не нужная внутри образа
+deploy
+compose.yaml
+compose.*.yaml
+docker-compose*.yml
+README.md
+
+rector.php

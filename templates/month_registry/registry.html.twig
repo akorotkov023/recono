@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Info{% endblock %}
+
+{% block body %}
+    {% if link is not empty %}
+        <a href="{{ path('app_find_file', {file: link}) }}"
+           class="link-primary me-3">
+            {{ link }}
+        </a>
+    {% else %}
+        <p>Файл не сформирован</p>
+    {% endif %}
+{% endblock %}

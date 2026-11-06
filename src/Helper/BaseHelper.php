@@ -783,9 +783,6 @@ class BaseHelper
             'started'       => \PDO::PARAM_STR,
         ]);
 
-        // Логируем дату, чтобы убедиться в микросекундах
-//        $this->logger->info(sprintf('started = %s', $started));
-
         return true;
     }
 
@@ -1102,7 +1099,6 @@ class BaseHelper
         }
     }
 
-    //Роллинг - 10% от суммы замораживает провайдер, но вскоре перечисляет её обратно нам
     public function getSumFutureCounterInProviderRolling($provider, $start)
     {
         $sql = /** @lang PostgreSQL */ "

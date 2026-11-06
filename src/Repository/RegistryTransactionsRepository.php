@@ -64,19 +64,6 @@ class RegistryTransactionsRepository extends ServiceEntityRepository
         return $sql->getQuery()->getResult();
     }
 
-//    /**
-//     * @return RegistryTransactions[] Returns an array of RegistryTransactions objects
-//     */
-//
-//    public function findProviderId($providerId)
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->where("t.providerId = '" . $providerId ."'")
-//            ->getQuery()
-//            ->getArrayResult()
-//            ;
-//    }
-
      /**
       * @return RegistryTransactions[] Returns an array of RegistryTransactions objects
       */
@@ -183,16 +170,4 @@ class RegistryTransactionsRepository extends ServiceEntityRepository
             ->where("tr.providerId in ('{$providerId}') and transactions.status in ('verified') ");
         return $qb->getQuery()->getResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?RegistryTransactions
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

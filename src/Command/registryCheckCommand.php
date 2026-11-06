@@ -93,7 +93,7 @@ class registryCheckCommand extends Command
                                  $issues = [
                                      'command_id' => $commandId,
                                      'type' => 'diff_reg',
-                                     'description' => 'Есть в реестре нет в базе. Смотри Dev2',
+                                     'description' => 'Есть в реестре нет в базе. Смотри Dev',
                                      'processing_id' => '',
                                      'provider_id' => $providerId,
                                      'started' => '',

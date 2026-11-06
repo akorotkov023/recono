@@ -39,22 +39,6 @@ class BalancePartnersRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return BalancePartners[] Returns an array of BalancePartners objects
-//     */
-//    public function checkSaveBalancesForDate($onDate): array
-//    {
-//        $toDate = new \DateTime($onDate);
-//        $toDate->modify('+1 day');
-//        $toDate = $toDate->format('Y-m-d');
-//
-//
-//        $qb = $this->createQueryBuilder('balance')
-//            ->andWhere("balance.createdAt >= '" . $onDate ."'")
-//            ->andWhere("balance.createdAt < '" . $toDate ."'");
-//        return $qb->getQuery()->getResult();
-//    }
-
     /**
      * @return BalancePartners[] Returns an array of BalancePartners objects
      */
@@ -71,14 +55,4 @@ class BalancePartnersRepository extends ServiceEntityRepository
             ->andWhere("balance.partnerId = ". $partnerId);
         return $qb->getQuery()->getResult();
     }
-
-//    public function findOneBySomeField($value): ?BalancePartners
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

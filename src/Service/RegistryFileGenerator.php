@@ -207,18 +207,6 @@ class RegistryFileGenerator
             foreach ($a as $item) {
                 $spreadsheet->getActiveSheet()->getColumnDimension($item)->setAutoSize(true);
             }
-            //Баланс на 2024-05-24 00:00:00:;name:;balance:;;;;;;
-//            $basement = ["Баланс на ". $on_date, "name","balance","","","","","",""];
-//            $sheet->fromArray($basement, null, 'A'.$row); // шапка подвала с балансами
-//            $row++;
-//
-//            foreach ($balances as $id => $balance) {
-//                $partner_login = $this->helper->getLoginById($id);
-//                $basement = ["",$partner_login,$balance,"","","","","",""];
-//                $sheet->fromArray($basement, null, 'A'.$row); // балансы
-//                $row++;
-//            }
-
             // Write and send created spreadsheet
             $writer = new Csv($spreadsheet);
 

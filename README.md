@@ -65,7 +65,7 @@ docker compose exec app tail -f var/log/application-dev.log
 - Мерчанты — строки таблицы `email_config` (`slug`, `registry_type`, `provider`).
 
 `registry_type` в `email_config` задаёт стратегию формирования реестра мерчанта:
-`percent` (комиссия 0.4%), `provider_amount` (зачисление provider_amount),
+`percent` (комиссия %), `provider_amount` (зачисление provider_amount),
 `merchant_amount` (зачисление merchant_amount). Возвраты формируются при
 `is_refund_checked = true`.
 

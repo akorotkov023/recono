@@ -46,29 +46,4 @@ class BalanceErrorLogRepository extends ServiceEntityRepository
             ->orderBy('log.onDate', 'DESC');
         return $qb->getQuery()->getResult();
     }
-
-//    /**
-//     * @return BalanceErrorLog[] Returns an array of BalanceErrorLog objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?BalanceErrorLog
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

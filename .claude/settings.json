@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(docker compose ps:*)",
+      "Bash(docker compose logs:*)",
+      "Bash(docker compose exec -T app php bin/console list:*)",
+      "Bash(docker compose exec -T app tail:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)"
+    ]
+  },
+  "enabledPlugins": {
+    "recono-pipeline@recono": true
+  },
+  "extraKnownMarketplaces": {
+    "recono": {
+      "source": {
+        "source": "directory",
+        "path": "."
+      }
+    }
+  }
+}

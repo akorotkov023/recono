@@ -1,0 +1,12 @@
+{
+  "name": "recono",
+  "owner": { "name": "Recono" },
+  "description": "Плагины Claude Code для работы с конвейером сверки реестров recono",
+  "plugins": [
+    {
+      "name": "recono-pipeline",
+      "source": "./plugins/recono-pipeline",
+      "description": "Оркестрация сверки реестров: провайдеры, мерчанты и балансы. Агент, скиллы и хуки безопасности."
+    }
+  ]
+}

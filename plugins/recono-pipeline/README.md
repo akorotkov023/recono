@@ -24,6 +24,7 @@ recono-pipeline/
 │   └── hooks.json                      SessionStart, PreToolUse, PostToolUse
 ├── scripts/
 │   └── hooks.py                        реализация хуков
+├── AGENTS.md                           правила поддержки плагина
 └── README.md
 ```
 
@@ -33,7 +34,7 @@ recono-pipeline/
 /recono-pipeline:run-reconciliation 2026-11-09 all
         │
         ▼
-reconciliation-orchestrator (субагент, скиллы предзагружены через поле skills)
+reconciliation-orchestrator (субагент на sonnet; скиллы — по автодискавери)
    0. docker compose ps + статусы за дату
    1. registry_get_mail → registry_create → registry_extract → registry_check
    2. гейт: все провайдерские реестры verified

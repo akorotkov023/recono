@@ -7,7 +7,8 @@ description: Правила безопасного изменения кода �
 
 ## Главные правила
 
-1. **Сначала прочитай `AGENTS.md`** — там актуальные команды, схема и ограничения.
+1. **Сначала прочитай корневой `AGENTS.md` и `AGENTS.md` каталога, в котором работаешь** —
+   там общие правила, схема и ограничения. Для команд — `src/Command/AGENTS.md`.
 2. **PHP — только в Docker.** Не запускай `php`, `composer`, `bin/console` на хосте.
    ```bash
    docker compose exec -T app php -l src/Command/MyCommand.php
@@ -26,7 +27,7 @@ description: Правила безопасного изменения кода �
 ## Куда добавлять код
 
 - Новая консольная команда — `src/Command/<name>Command.php`, имя команды в `#[AsCommand]`
-  в snake_case (исключения — camelCase, см. `AGENTS.md`).
+  в snake_case (исключения — camelCase, см. `src/Command/AGENTS.md`).
 - Переиспользуемая логика — `src/Service/...` или отдельный узкий хелпер, не `BaseHelper`.
 - Работа с БД процессинга — только через `App\Service\Connection\Pool` (сырой PDO), таблицы
   `public.*`; Doctrine их не знает.
@@ -95,7 +96,8 @@ created → checking → checked → finishing → finished | error
 
 ## Чек-лист изменения
 
-1. Прочитал `AGENTS.md` и relevant-скилл `pipeline-runbook`.
+1. Прочитал корневой `AGENTS.md`, `src/AGENTS.md` (и `src/Command/AGENTS.md` для команд)
+   и relevant-скилл `pipeline-runbook`.
 2. Понял, какой статус/переход затрагиваю и какие команды его читают.
 3. Проверил, не дублирую ли существующий сервис/метод.
 4. Если менял схему — обновил `tables.sql` (и при необходимости локальную БД вручную).

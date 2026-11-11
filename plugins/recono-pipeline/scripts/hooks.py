@@ -26,7 +26,7 @@ CONTEXT = """Контекст recono-pipeline:
 - Провайдерский конвейер: registry_get_mail -> registry_create -> registry_extract -> registry_check.
 - Реестры мерчантам создаются только после статуса verified у всех провайдерских реестров за дату.
 - balance_finish вызывает wallet/inc и необратим: сначала проверь wallet_id, counter_in_was, counter_in_be.
-- Перед изменениями кода прочитай AGENTS.md и скиллы pipeline-runbook, pipeline-diagnostics, pipeline-change.
+- Перед изменениями кода прочитай корневой AGENTS.md, AGENTS.md нужного каталога и скиллы pipeline-runbook, pipeline-diagnostics, pipeline-change.
 - Схема поддерживается вручную в tables.sql, миграций нет. Защищённые файлы: .env.local, tables.sql, src/Helper/BaseHelper.php."""
 
 # Команды, которые меняют данные или необратимы. Спрашиваем подтверждение.
